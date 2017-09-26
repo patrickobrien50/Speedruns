@@ -71,18 +71,6 @@ class GameViewController: UIViewController {
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-
-    
-    
-    
-
-    
-    
-    
     //MARK: getVariablesFunction()
     
     func getVariables(category : Category, completion: @escaping (VariablesResponse) -> Void) {
@@ -100,6 +88,7 @@ class GameViewController: UIViewController {
         dataRequest.resume()
     }
     
+    var imageViewAspectConstraint: NSLayoutConstraint?
 
     //MARK: downloadImageFunction()
     func downloadImage(_ uri : String, inView: UIImageView){
@@ -111,7 +100,21 @@ class GameViewController: UIViewController {
                 if let data = responseData {
                     
                     DispatchQueue.main.async {
-                        inView.image = UIImage(data: data)
+                        self.imageViewAspectConstraint?.isActive = false
+                        if let image = UIImage(data: data) {
+                            inView.image = image
+                            self.imageViewAspectConstraint = NSLayoutConstraint(
+                                item: inView, attribute: .height,
+                                relatedBy: .equal,
+                                toItem: inView, attribute: .width,
+                                multiplier: (image.size.height / image.size.width),
+                                constant: 0
+                            )
+                            self.imageViewAspectConstraint?.isActive = true
+                        } else {
+                            inView.image = nil
+                        }
+                        
                     }
                     
                 } else {
