@@ -2,11 +2,11 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "icons8-Christmas Star-100.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
+      "filename" : "star88pts.png",
       "scale" : "2x"
     },
     {
