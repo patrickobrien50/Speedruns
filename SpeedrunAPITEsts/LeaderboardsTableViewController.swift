@@ -401,42 +401,21 @@ extension LeaderboardsTableViewController {
                 cell.trophyImageView.alpha = 0
                 cell.runPlaceLabel.alpha = 1
                 print(indexPath.row)
-//                if times[indexPath.row] == times[indexPath.row - 1] {
-//                    if indexPath.row >= 9 && indexPath.row <= 19 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)th"
-//                    } else if indexPath.row + 1 % 10 == 1 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)st"
-//                    } else if indexPath.row + 1 % 10 == 2 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)nd"
-//                    } else if indexPath.row + 1 % 10 == 3 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)rd"
-//                    } else {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)th"
-//                    }
-//                } else {
-//                    if indexPath.row + 1 >= 9 && indexPath.row <= 19 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)th"
-//                    } else if indexPath.row % 10 == 1 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)st"
-//                    } else if indexPath.row % 10 == 2 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)nd"
-//                    } else if indexPath.row + 1 % 10 == 3 {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)rd"
-//                    } else {
-//                        cell.runPlaceLabel.text = "\(indexPath.row)th"
-//                    }
-//                }
-                if indexPath.row >= 9 && indexPath.row <= 19 {
-                    cell.runPlaceLabel.text = "\(indexPath.row + 1)th"
-                } else if indexPath.row + 1 % 10 == 1 {
-                    cell.runPlaceLabel.text = "\(indexPath.row + 1)st"
-                } else if indexPath.row + 1 % 10 == 2 {
-                    cell.runPlaceLabel.text = "\(indexPath.row + 1)nd"
-                } else if indexPath.row + 1 % 10 == 3 {
-                    cell.runPlaceLabel.text = "\(indexPath.row + 1)rd"
-                } else {
-                    cell.runPlaceLabel.text = "\(indexPath.row + 1)th"
+                
+                let numberFormatter = NumberFormatter()
+                numberFormatter.numberStyle = .ordinal
+                cell.runPlaceLabel.text = numberFormatter.string(from: NSNumber(value: indexPath.row + 1))
+                if indexPath.row > 99 {
+                    cell.runPlaceLabel.text = "\(indexPath.row + 1)"
                 }
+                if times[indexPath.row] == times[indexPath.row - 1] {
+                    cell.runPlaceLabel.text = ""
+                }
+                if times[indexPath.row + 1] == times[indexPath.row] {
+                    cell.separatorInset.left = 70
+
+                }
+                
             }
         }
     }
