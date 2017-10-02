@@ -7,7 +7,6 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
         <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
-        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -312,14 +311,14 @@
                                                 <constraint firstAttribute="width" constant="15" id="9wF-bz-IY3"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g02-Sh-Cdn">
-                                            <rect key="frame" x="72" y="14" width="217" height="19"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hassanblackmossem" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g02-Sh-Cdn">
+                                            <rect key="frame" x="72" y="14" width="165" height="19"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2mH-0J-0Mp">
-                                            <rect key="frame" x="285" y="14" width="82" height="19"/>
+                                            <rect key="frame" x="245" y="14" width="82" height="19"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="82" id="bLw-zT-aS7"/>
                                             </constraints>
@@ -337,10 +336,16 @@
                                             <color key="textColor" red="0.0" green="0.50196081400000003" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="iK4-Q7-jUg">
+                                            <rect key="frame" x="341" y="13" width="20" height="20"/>
+                                        </imageView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="YdO-GY-Tc1" firstAttribute="leading" secondItem="qIX-2v-4Fl" secondAttribute="trailing" constant="2" id="0P9-bx-9LH"/>
                                         <constraint firstItem="YdO-GY-Tc1" firstAttribute="firstBaseline" secondItem="g02-Sh-Cdn" secondAttribute="firstBaseline" id="41D-7L-ICR"/>
+                                        <constraint firstItem="iK4-Q7-jUg" firstAttribute="bottom" secondItem="2mH-0J-0Mp" secondAttribute="bottom" id="DSs-aX-6Id"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="iK4-Q7-jUg" secondAttribute="trailing" constant="6" id="FEM-gb-Da6"/>
+                                        <constraint firstItem="iK4-Q7-jUg" firstAttribute="leading" secondItem="2mH-0J-0Mp" secondAttribute="trailing" constant="14" id="FRt-7u-kEr"/>
                                         <constraint firstItem="g02-Sh-Cdn" firstAttribute="firstBaseline" secondItem="2mH-0J-0Mp" secondAttribute="firstBaseline" id="IHe-T7-2gQ"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="qIX-2v-4Fl" secondAttribute="bottom" constant="8.5" id="Mjm-o4-9Xc"/>
                                         <constraint firstItem="qIX-2v-4Fl" firstAttribute="leading" secondItem="JuF-Ue-mk1" secondAttribute="leading" constant="10" id="aAN-wE-cOI"/>
@@ -349,9 +354,10 @@
                                         <constraint firstItem="YdO-GY-Tc1" firstAttribute="baseline" secondItem="g02-Sh-Cdn" secondAttribute="baseline" id="gxH-oE-tu7"/>
                                         <constraint firstItem="g02-Sh-Cdn" firstAttribute="leading" secondItem="YdO-GY-Tc1" secondAttribute="trailing" constant="5" id="hQF-DF-NE6"/>
                                         <constraint firstItem="qIX-2v-4Fl" firstAttribute="top" secondItem="YdO-GY-Tc1" secondAttribute="top" id="iiv-Db-k7R"/>
+                                        <constraint firstItem="iK4-Q7-jUg" firstAttribute="centerY" secondItem="2mH-0J-0Mp" secondAttribute="centerY" id="jwg-Md-nwi"/>
                                         <constraint firstItem="qIX-2v-4Fl" firstAttribute="top" secondItem="JuF-Ue-mk1" secondAttribute="topMargin" constant="6" id="mf1-al-t3M"/>
-                                        <constraint firstItem="2mH-0J-0Mp" firstAttribute="leading" secondItem="g02-Sh-Cdn" secondAttribute="trailing" constant="-4" id="pf3-J4-uKk"/>
-                                        <constraint firstItem="2mH-0J-0Mp" firstAttribute="trailing" secondItem="JuF-Ue-mk1" secondAttribute="trailingMargin" id="zDB-LA-PUq"/>
+                                        <constraint firstItem="2mH-0J-0Mp" firstAttribute="leading" secondItem="g02-Sh-Cdn" secondAttribute="trailing" constant="8" id="pf3-J4-uKk"/>
+                                        <constraint firstItem="2mH-0J-0Mp" firstAttribute="trailing" secondItem="JuF-Ue-mk1" secondAttribute="trailingMargin" constant="-40" id="zDB-LA-PUq"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
@@ -368,14 +374,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Leaderboards" id="a2D-ib-i1Z">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Filters" id="TFB-bP-vmf"/>
-                            <barButtonItem title="Rules" style="done" id="3L9-en-P1u">
-                                <connections>
-                                    <segue destination="qDL-H2-gba" kind="presentation" identifier="RulesSegue" id="mUO-bn-NIQ"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Rules" style="done" id="3L9-en-P1u">
+                            <connections>
+                                <segue destination="qDL-H2-gba" kind="presentation" identifier="RulesSegue" id="mUO-bn-NIQ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="b83-Lt-LRf" userLabel="First Responder" sceneMemberID="firstResponder"/>

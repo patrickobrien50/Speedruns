@@ -30,7 +30,15 @@ class GameViewController: UIViewController {
     //MARK: viewDidLoad()
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        guard let favoriteGamesJSONData = (defaults.array(forKey: "FavJSONData") as? [Data])  else { return }
+        let gameData = try? JSONEncoder().encode(game)
+        if let data = gameData {
+            for gameJSONData in favoriteGamesJSONData {
+                if data == gameJSONData {
+                    navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "star88pts-1")
+                }
+            }
+        }
         if let gameCategories = game?.categories?.data{
             for item in gameCategories {
                 if item.rules != nil {
@@ -42,7 +50,7 @@ class GameViewController: UIViewController {
         platformsLabel.adjustsFontSizeToFitWidth = true
         leaderboardsTableView.dataSource = self
         leaderboardsTableView.delegate = self
-        downloadImage(game?.assets.coverMedium.uri ?? "Nothing", inView: gameImageView) 
+        downloadImage(game?.assets.coverMedium.uri ?? "Nothing", inView: gameImageView)
         releaseDateLabel.text = game?.releaseDate ?? "Unknown"
         print(game?.assets.coverSmall.uri ?? "Somethign")
         
@@ -195,9 +203,10 @@ class GameViewController: UIViewController {
             } else {
                 let gameExists = gameAlreadyExists(game: data, jsonArray: favoriteGamesJsonData)
                 
-                if gameExists == true {
+                if navigationItem.rightBarButtonItem?.image == #imageLiteral(resourceName: "star88pts-1") {
                     print("Game already saved")
-                } else if gameExists == false {
+                } else if navigationItem.rightBarButtonItem?.image == #imageLiteral(resourceName: "star88pts") {
+                    navigationItem.rightBarButtonItem?.image = #imageLiteral(resourceName: "star88pts-1")
                     favoriteGamesJsonData.insert(data, at: 0)
                     defaults.set(favoriteGamesJsonData, forKey: "FavJSONData")
                 }

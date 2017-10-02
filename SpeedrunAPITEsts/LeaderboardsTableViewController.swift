@@ -114,9 +114,8 @@ class LeaderboardsTableViewController: UITableViewController {
         let task = URLSession.shared.dataTask(with: url) {
             (data, response, error) in
             guard let data = data else { return }
-            let leaderboardsData = try! JSONDecoder().decode(LeaderboardsResponse.self, from: data)
-                let leaderboards = leaderboardsData.data
-//                {
+            let leaderboardsData = try? JSONDecoder().decode(LeaderboardsResponse.self, from: data)
+            if let leaderboards = leaderboardsData?.data {
                 for runPosition in leaderboards.runs {
                     print(runPosition.place)
                     for player in runPosition.run.players {
@@ -159,10 +158,10 @@ class LeaderboardsTableViewController: UITableViewController {
                         }
                     }
                 }
-                DispatchQueue.main.async {
-                    self.animateTable()
-                }
-//            }
+            }
+            DispatchQueue.main.async {
+                self.animateTable()
+            }
         }
         task.resume()
     }
@@ -189,6 +188,7 @@ class LeaderboardsTableViewController: UITableViewController {
         self.tableView.reloadData()
         
         let cells = self.tableView.visibleCells
+    
         
         let tableViewWidth = self.tableView.bounds.size.width
         
@@ -199,6 +199,7 @@ class LeaderboardsTableViewController: UITableViewController {
         var delayCounter = 0
         
         for cell in cells {
+            cell.alpha = 1
             UIView.animate(withDuration: 0.3, delay: Double(delayCounter) * 0.05, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: .curveEaseInOut, animations: {
                 cell.transform = CGAffineTransform.identity
             }, completion: nil)
@@ -322,7 +323,11 @@ extension LeaderboardsTableViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return runners.count
+        if runners.count == 0 {
+            return 1
+        } else {
+            return runners.count
+        }
     }
     
     
@@ -336,72 +341,29 @@ extension LeaderboardsTableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomLeaderboardTableViewCell
-        cell.runnerNameLabel.text = runners[indexPath.row]
-        cell.runTimeLabel.text = times[indexPath.row]
-        if indexPath.row == 0 {
-            downloadImage(game?.assets.trophy1st.uri ?? "Nothing", inView: cell.trophyImageView)
-            cell.runPlaceLabel.text = "1st"
-        } else if indexPath.row == 1 {
-            downloadImage(game?.assets.trophy2nd.uri ?? "Nothing", inView: cell.trophyImageView)
-            cell.runPlaceLabel.text = "2nd"
-        } else if indexPath.row == 2 {
-            cell.runPlaceLabel.text = "3rd"
-            downloadImage(game?.assets.trophy3rd.uri ?? "Nothing", inView: cell.trophyImageView)
-            
+        if runners.count == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomLeaderboardTableViewCell
+            cell.runnerNameLabel.text = "No results found"
+            cell.runPlaceLabel.alpha = 0
+            cell.trophyImageView.image = nil
+            cell.runTimeLabel.alpha = 0
+            cell.alpha = 0
+            cell.separatorInset = UIEdgeInsets.zero
+            return cell
         } else {
-            cell.trophyImageView.alpha = 0
-            cell.runPlaceLabel.alpha = 1
-            if indexPath.row >= 9 && indexPath.row <= 19 {
-                cell.runPlaceLabel.text = "\(indexPath.row + 1)th"
-            } else if indexPath.row + 1 % 10 == 1 {
-                cell.runPlaceLabel.text = "\(indexPath.row + 1)st"
-            } else if indexPath.row + 1 % 10 == 2 {
-                cell.runPlaceLabel.text = "\(indexPath.row + 1)nd"
-            } else if indexPath.row + 1 % 10 == 3 {
-                cell.runPlaceLabel.text = "\(indexPath.row + 1)rd"
-            } else {
-                cell.runPlaceLabel.text = "\(indexPath.row + 1)th"
-            }
-        }
-        
-        
-        
-        return cell
-    }
-    
-    
-    
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let cell = cell as? CustomLeaderboardTableViewCell {
-            if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CustomLeaderboardTableViewCell
+            cell.runnerNameLabel.text = runners[indexPath.row]
+            cell.runTimeLabel.text = times[indexPath.row]
+            if indexPath.row == 0 && runners.count != 0 {
                 downloadImage(game?.assets.trophy1st.uri ?? "Nothing", inView: cell.trophyImageView)
                 cell.runPlaceLabel.text = "1st"
-                cell.trophyImageView.alpha = 1
             } else if indexPath.row == 1 {
                 downloadImage(game?.assets.trophy2nd.uri ?? "Nothing", inView: cell.trophyImageView)
-                if times[indexPath.row] == times[indexPath.row - 1] {
-                    cell.runPlaceLabel.text = "1st"
-                } else {
-                    cell.runPlaceLabel.text = "2nd"
-                }
-                cell.trophyImageView.alpha = 1
-
+                cell.runPlaceLabel.text = "2nd"
             } else if indexPath.row == 2 {
-                cell.trophyImageView.alpha = 1
-                if times[indexPath.row] == times[indexPath.row - 1] {
-                    cell.runPlaceLabel.text = "2nd"
-                } else {
-                    cell.runPlaceLabel.text = "3rd"
-                }
+                cell.runPlaceLabel.text = "3rd"
                 downloadImage(game?.assets.trophy3rd.uri ?? "Nothing", inView: cell.trophyImageView)
-                
             } else {
-                cell.trophyImageView.alpha = 0
-                cell.runPlaceLabel.alpha = 1
-                print(indexPath.row)
-                
                 let numberFormatter = NumberFormatter()
                 numberFormatter.numberStyle = .ordinal
                 cell.runPlaceLabel.text = numberFormatter.string(from: NSNumber(value: indexPath.row + 1))
@@ -413,9 +375,65 @@ extension LeaderboardsTableViewController {
                 }
                 if times[indexPath.row + 1] == times[indexPath.row] {
                     cell.separatorInset.left = 70
-
                 }
-                
+            }
+            return cell
+        }
+    }
+    
+    
+    
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let cell = cell as? CustomLeaderboardTableViewCell {
+            if runners.count == 0 {
+                cell.runnerNameLabel.text = "No results found"
+                cell.runPlaceLabel.alpha = 0
+                cell.trophyImageView.image = nil
+                cell.runTimeLabel.alpha = 0
+                cell.alpha = 0
+                cell.separatorInset = UIEdgeInsets.zero
+                tableView.separatorColor = UIColor.clear
+            } else {
+                tableView.separatorColor = UIColor.black
+                cell.runTimeLabel.alpha = 1
+                cell.runPlaceLabel.alpha = 1
+                if indexPath.row == 0 {
+                    downloadImage(game?.assets.trophy1st.uri ?? "Nothing", inView: cell.trophyImageView)
+                    cell.runPlaceLabel.text = "1st"
+                    cell.trophyImageView.alpha = 1
+                } else if indexPath.row == 1 {
+                    downloadImage(game?.assets.trophy2nd.uri ?? "Nothing", inView: cell.trophyImageView)
+                    if times[indexPath.row] == times[indexPath.row - 1] {
+                        cell.runPlaceLabel.text = "1st"
+                    } else {
+                        cell.runPlaceLabel.text = "2nd"
+                    }
+                    cell.trophyImageView.alpha = 1
+                } else if indexPath.row == 2 {
+                    cell.trophyImageView.alpha = 1
+                    if times[indexPath.row] == times[indexPath.row - 1] {
+                        cell.runPlaceLabel.text = "2nd"
+                    } else {
+                        cell.runPlaceLabel.text = "3rd"
+                    }
+                    downloadImage(game?.assets.trophy3rd.uri ?? "Nothing", inView: cell.trophyImageView)
+                } else {
+                    cell.trophyImageView.alpha = 0
+                    cell.runPlaceLabel.alpha = 1
+                    print(indexPath.row)
+                    let numberFormatter = NumberFormatter()
+                    numberFormatter.numberStyle = .ordinal
+                    cell.runPlaceLabel.text = numberFormatter.string(from: NSNumber(value: indexPath.row + 1))
+                    if indexPath.row > 99 {
+                        cell.runPlaceLabel.text = "\(indexPath.row + 1)"
+                    }
+                    if times[indexPath.row] == times[indexPath.row - 1] {
+                        cell.runPlaceLabel.text = ""
+                    }
+                    if times[indexPath.row + 1] == times[indexPath.row] {
+                        cell.separatorInset.left = 70
+                    }
+                }
             }
         }
     }
@@ -429,8 +447,10 @@ extension LeaderboardsTableViewController {
     
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(videoLinks[indexPath.row])
-        askToTransferToRun(link: videoLinks[indexPath.row])
+        if runners.count > 0 {
+            print(videoLinks[indexPath.row])
+            askToTransferToRun(link: videoLinks[indexPath.row])
+        }
     }
     
     
